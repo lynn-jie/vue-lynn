@@ -155,7 +155,35 @@
 			}
 
 		},
+		
+		created() {
+			
+			this.init();
+			
+		},
+		
 		methods: {
+
+			init() {
+				axios.get('http://localhost/manager/org/list/{customerId}', {
+						params: {
+							type: "get",
+							dataType: "json",
+							contentType: "application/json"
+						}
+					})
+					.then(response => {
+						//					console.log(response);
+						this.tableData = response.data.data;
+
+					})
+					.catch(error => {
+						console.log(error);
+						console.log('网络错误');
+						alert('亲，网络错误，无法访问,请联系后台管理员');
+					});
+			},
+
 			open6() {
 				this.$confirm('此操作将永久删除该数据 , 是否继续呢?', '提示', {
 					confirmButtonText: '确定',

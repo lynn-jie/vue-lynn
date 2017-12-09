@@ -9,6 +9,7 @@ import axios from 'axios';
 import 'element-ui/lib/theme-default/index.css';
 
 Vue.use(axios);
+
 Vue.use(ElementUI);
 Vue.config.productionTip = false
 

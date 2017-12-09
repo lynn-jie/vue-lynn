@@ -39,14 +39,7 @@
 					</el-form-item>
 					<el-form-item label="数量" :label-width="formLabelWidth">
 						<!--<el-input v-model="form.number" auto-complete="off"></el-input>-->
-						<el-input-number v-model="num1" @change="handleChange" :min="0" :max="500" label="请输入"></el-input-number>
-					</el-form-item>
-
-					<el-form-item label="日期" :label-width="formLabelWidth">
-						<el-col :span="11">
-							<el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
-						</el-col>
-
+						<el-input-number v-model="form.orgcount" @change="handleChange" :min="0" :max="500" label="请输入"></el-input-number>
 					</el-form-item>
 
 				</el-form>
@@ -57,8 +50,7 @@
 				</div>
 			</el-dialog>
 
-			<el-button size="medium" type="success" @click="open3">刷新</el-button>
-			<el-button size="medium" type="danger" @click="open6">删除</el-button>
+			<el-button size="medium" type="success" @click="open3(row)">刷新</el-button>
 
 		</div>
 
@@ -84,7 +76,7 @@
 
 					</router-link>
 
-					<el-button size="mini" type="primary" @click='modify()'>修改</el-button>
+					<el-button size="mini" type="primary" @click='modify(row)'>修改</el-button>
 
 				</template>
 			</el-table-column>
@@ -101,7 +93,8 @@
 
 <script>
 	//	import vPageTitle from '../common/pageTitle.vue';
-	import axios from 'axios';
+//	import axios from 'axios';
+	import api from '../../api/api.js';
 
 	export default {
 
@@ -119,13 +112,14 @@
 				dialogFormVisible: false,
 				form: {
 					name: '',
-					region: '',
-					date1: '',
-					date2: '',
+					createTime: '',
+					orgcount: '',
 					delivery: false,
 					type: [],
 					resource: '',
-					desc: ''
+					desc: '',
+					linkman: '',
+					phone: ''
 				},
 				formLabelWidth: '120px'
 			}
@@ -133,9 +127,9 @@
 		},
 
 		created() {
-			
+
 			this.init();
-			
+
 		},
 		methods: {
 			open6() {
@@ -167,91 +161,108 @@
 			handleChange(value) {
 				console.log(value);
 			},
-			init(){
-				
-//	  获取列表数据
-			axios.get('http://localhost/manager/customer/search?n=100&p=1', {
-					params: {
-						type: "get",
-						dataType: "json",
-						contentType: "application/json"
-					}
-				})
-				.then(response => {
-					//					console.log(response);
-					this.tableData = response.data.data;
 
-				})
-				.catch(error => {
-					console.log(error);
-					console.log('网络错误');
-					alert('亲，网络错误，无法访问,请联系后台管理员');
-				});
+			//	             获取列表数据
+			init() {
+
+				axios.get(api.apidomain + 'customer/search?n=100&p=1', {
+						params: {
+							type: "get",
+							dataType: "json",
+							contentType: "application/json"
+						}
+					})
+					.then(response => {
+						//	console.log(response);
+						this.tableData = response.data.data;
+
+					})
+					.catch(error => {
+						console.log(error);
+						console.log('网络错误');
+						alert('亲，网络错误，无法访问,请联系后台管理员');
+					});
 			},
-			
-//			 添加
-			add(){
+
+			//	添加
+			add() {
 				axios.post('http://localhost/manager/customer', {
-						params:this.form
-					
-				})
-				.then(response => {
-					//					console.log(response);
-					this.tableData = response.data.data;
-					console.log(123)
-				})
-				.catch(error => {
-					console.log(error);
-					console.log('网络错误');
-					alert('无法访问,无法添加');
-				});
+//						params:from
+						
+//						'name': "测试demo",
+//						'linkman': "352048",
+//						'phone': "120119188"
+					})
+					.then(response => {
+						console.log(response);
+//						console.log(123)
+						alert('恭喜成功！');
+					})
+					.catch(error => {
+						console.log(error);
+						console.log('网络错误');
+						alert('无法访问,无法添加');
+					});
 				this.dialogFormVisible = false;
 				this.init();
-				
-				
+
 			},
-			
-//          修改
-			modify(customerId){
+			//			add() {
+			//				
+			//			axios.post('http://localhost/manager/customer', {
+			//				firstName: 'Fred',
+			//				lastName: 'Flintstone'
+			//			})
+			//			.then(function(response) {
+			//				console.log(response);
+			//			})
+			//			.catch(function(error) {
+			//				console.log(error);
+			//				alert('无法访问,无法添加');
+			//			});
+			//			
+			//			},
+			//          修改
+			modify(customerId) {
 				console.log(customerId);
-//				axios.get('http://localhost/manager/customer', {
-//						params:customerId
-//					
-//				})
-//				.then(response => {
-//					//					console.log(response);
-//					this.tableData = response.data.data;
-//					console.log(123)
-//				})
-//				.catch(error => {
-//					console.log(error);
-//					console.log('网络错误');
-//					alert('访问错误，无法修改');
-//				});
+				//				axios.get('http://localhost/manager/customer', {
+				//						params:customerId
+				//					
+				//				})
+				//				.then(response => {
+				//					//					console.log(response);
+				//					this.tableData = response.data.data;
+				//					console.log(123)
+				//				})
+				//				.catch(error => {
+				//					console.log(error);
+				//					console.log('网络错误');
+				//					alert('访问错误，无法修改');
+				//				});
 				this.dialogFormVisible = true;
 				this.init();
 
 			},
-			
-//          删除
-//			del(){
-//				axios.post('http://localhost/manager/customer', {
-//						params:this.form
-//					
-//				})
-//				.then(response => {
-//					//					console.log(response);
-//					this.tableData = response.data.data;
-//					console.log(123)
-//				})
-//				.catch(error => {
-//					console.log(error);
-//					console.log('网络错误');
-//					alert('无法访问,请联系后台管理员');
-//				});
-//				this.dialogFormVisible = false;
-//				
-//			}
+
+			//          删除
+			//			del(){
+			//				axios.post('http://localhost/manager/customer', {
+			//						params:this.form
+			//					
+			//				})
+			//				.then(response => {
+			//					//					console.log(response);
+			//					this.tableData = response.data.data;
+			//					console.log(123)
+			//				})
+			//				.catch(error => {
+			//					console.log(error);
+			//					console.log('网络错误');
+			//					alert('无法访问,请联系后台管理员');
+			//				});
+			//				this.dialogFormVisible = false;
+			//				
+			//			}
 		}
 	}
 </script>

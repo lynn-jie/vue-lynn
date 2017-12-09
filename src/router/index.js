@@ -11,6 +11,8 @@ import organization from '@/components/page/organization';
 import space from '@/components/page/space';
 import member from '@/components/page/member';
 
+import test from '@/components/page/test';
+
 Vue.use(Router)
 
 export default new Router({
@@ -29,11 +31,11 @@ export default new Router({
           component:DashBoard
         },{
           path:'/customer',
-          component:customer
-        },{
-          path:'/organization',
-          component:organization
-        },{
+          component:customer,
+          children: [
+            { path: '/customer/organization', component: organization}
+        ]
+    		},{
           path:'/equipment',
           component:equipment
         },{
@@ -48,9 +50,19 @@ export default new Router({
         },{
           path:'/member',
           component:member
+        },{
+          path:'/test',
+          component:test
         }
+        
         
       ]
     }
   ]
 })
+
+
+//children: [
+//          { path: '/main', component: Main, name: '主页', hidden: true },  
+//      ]
+//  },
